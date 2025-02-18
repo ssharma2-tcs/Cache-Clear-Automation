@@ -73,6 +73,8 @@ require("dotenv").config();
       );
       await cacheIt.click();
       await driver.sleep(2000);
+      await driver.get("https://control.akamai.com/apps/fast-purge/#/");
+      await driver.sleep(3000);
       if(i===5){
         await driver.get("chrome://newtab");
       }
