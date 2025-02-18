@@ -4,13 +4,13 @@ require('dotenv').config();
 
 (async function example() {
   let options = new chrome.Options();
-  options.options_["debuggerAddress"] = "localhost:9222";
+  // options.options_["debuggerAddress"] = "localhost:9222";
 
-  // options.addArguments(
-  //   "user-data-dir=C:/Users/ssharma2/AppData/Local/Google/Chrome/User Data"
-  // );
-  // options.addArguments("profile-directory=Default");
-  // options.excludeSwitches(["enable-automation"]);
+  options.addArguments(
+    "user-data-dir=C:/Users/ssharma2/AppData/Local/Google/Chrome/User Data"
+  );
+  options.addArguments("profile-directory=Default");
+  options.excludeSwitches(["enable-automation"]);
   // // options.addArguments("load-extension=C:/Users/ssharma2/AppData/Local/Google/Chrome/User Data/Default/Extensions/bhghoamapcdpbohphigoooaddinpkbai/8.0.1_0/")
   let driver = await new Builder()
     .forBrowser("chrome")
@@ -18,9 +18,9 @@ require('dotenv').config();
     .build();
   try {
     await driver.manage().window().maximize();
-    let tabs = await driver.getAllWindowHandles();
-    console.log("open tab", tabs);
-    await driver.switchTo().window(tabs[0]);
+    // let tabs = await driver.getAllWindowHandles();
+    // console.log("open tab", tabs);
+    // await driver.switchTo().window(tabs[0]);
     
     await driver.get("https://control.akamai.com/apps/auth/");
     await driver.sleep(5000);
@@ -42,7 +42,7 @@ require('dotenv').config();
     await driver.sleep(7000);
     await driver.get("https://control.akamai.com/apps/fast-purge/#/");
     await driver.sleep(3000);
-    /*let cachetags = [
+    let cachetags = [
       "coachRetailJP_prod_global",
       "coachRetailJP_prod_home",
       "coachRetailJP_prod_category",
@@ -61,16 +61,16 @@ require('dotenv').config();
       "katespadeJP_prod_product",
       "katespadeJP_prod_search",
       "katespadeJP_prod_content"
-    ];*/
+    ];
     
-    let cachetags = [
+    /*let cachetags = [
       "coachRetailJP_stage_global",
       "coachRetailJP_stage_home",
       "coachRetailJP_stage_category",
       "coachRetailJP_stage_product",
       "coachRetailJP_stage_search",
       "coachRetailJP_stage_content"
-    ];
+    ];*/
     
     for (let i = 0; i < cachetags.length; i++) {
       await driver
@@ -89,7 +89,7 @@ require('dotenv').config();
       
       await driver.sleep(2000);
       let selectEnv = await driver.findElement(
-        By.css(`span[translate="template.ccu.networkType.stage"]`)
+        By.css(`span[translate="template.ccu.networkType.prod"]`)
       );
       await selectEnv.click();
       await driver.sleep(2000);
