@@ -16,13 +16,13 @@ require("dotenv").config();
     await driver.switchTo().window(tabs[0]);
     await driver.sleep(3000);
     
-    //staging
-    // let sfccCode = ['1329410', '1329415', '1329811'];
-    // let pwaCode = ['1329411', '1329419', '1329810'];
+    // staging
+    let sfccCode = ['1329410', '1329415', '1329811'];
+    let pwaCode = ['1329411', '1329419', '1329810'];
     
     //production
-    let sfccCode = ['1338995', '1338998', '1339116'];
-    let pwaCode = ['1338996', '1338999', '1339114'];
+    // let sfccCode = ['1338995', '1338998', '1339116'];
+    // let pwaCode = ['1338996', '1338999', '1339114'];
 
     await driver.get("https://control.akamai.com/apps/fast-purge/#/");
     // await driver.get("chrome://newtab");
@@ -72,9 +72,9 @@ require("dotenv").config();
         By.css(`button[translate="template.ccu.button.submit"]`)
       );
       await cacheIt.click();
-      await driver.sleep(2000);
-      await driver.get("https://control.akamai.com/apps/fast-purge/#/");
       await driver.sleep(3000);
+      selectTd.click();
+      await driver.sleep(2000);
       if(i===5){
         await driver.get("chrome://newtab");
       }
