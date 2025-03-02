@@ -46,7 +46,7 @@ require("dotenv").config();
     // );
     // await submit.click();
     // await driver.sleep(7000);
-    
+
     await driver.get("https://control.akamai.com/apps/fast-purge/#/");
     let cachetags = [
       "coachRetailJP_prod_global",
@@ -75,43 +75,65 @@ require("dotenv").config();
     //   "coachRetailJP_stage_category",
     //   "coachRetailJP_stage_product",
     //   "coachRetailJP_stage_search",
-    //   "coachRetailJP_stage_content"
+    //   "coachRetailJP_stage_content",
     // ];
 
     for (let i = 0; i < cachetags.length; i++) {
       await driver.sleep(3000);
       await driver
-        .findElement(By.css("label[for='akam-radio-4-input']"))
+        .wait(
+          until.elementLocated(By.css("label[for='akam-radio-4-input']")),
+          5000
+        )
         .click();
       await driver.sleep(3000);
-      let input = await driver.wait(until.elementLocated(By.css(
-        `input[placeholder="Type a valid cache tag, and press Enter or Tab after each tag entered"]`
-      ))
-       ,10000 
+      let input = await driver.wait(
+        until.elementLocated(
+          By.css(
+            `input[placeholder="Type a valid cache tag, and press Enter or Tab after each tag entered"]`
+          )
+        ),
+        10000
       );
       await input.click();
       await input.sendKeys(cachetags[i]);
       await driver.sleep(2000);
-      await driver.findElement(By.className("core-2-0 pulsar")).click();
-
+      // await input.sendKeys(Key.RETURN);
+      await driver
+        .wait(until.elementLocated(By.className("core-2-0 pulsar")), 5000)
+        .click();
       await driver.sleep(2000);
-      let selectEnv = await driver.findElement(
-        By.css(`span[translate="template.ccu.networkType.prod"]`)
+      // await input.click();
+      // await driver.sleep(2000);
+      let selectEnv = await driver.wait(
+        until.elementLocated(
+          By.css(`span[translate="template.ccu.networkType.prod"]`)
+        ),
+        5000
       );
       await selectEnv.click();
       await driver.sleep(2000);
-      let selectCacheway = await driver.findElement(
-        By.css(`span[translate="template.ccu.refreshType.purge"]`)
+      let selectCacheway = await driver.wait(
+        until.elementLocated(
+          By.css(`span[translate="template.ccu.refreshType.purge"]`)
+        ),
+        5000
       );
       await selectCacheway.click();
       await driver.sleep(3000);
-      let cacheIt = await driver.findElement(
-        By.css(`button[translate="template.ccu.button.submit"]`)
+      let cacheIt = await driver.wait(
+        until.elementLocated(
+          By.css(`button[translate="template.ccu.button.submit"]`)
+        ),
+        5000
       );
 
       await cacheIt.click();
-      console.log("Cache is cleared for ",cachetags[i]);
+      console.log("Cache is cleared for ", cachetags[i]);
       await driver.sleep(4000);
+      if (i === cachetags.length - 1) {
+        await driver.get("chrome://newtab");
+      }
     }
 
     // await driver.findElement(By.className("akam-tag-input-tags_input akam-tag-input-container_input ng-pristine ng-valid ng-touched")).sendKeys("Sourav");
@@ -124,6 +146,8 @@ require("dotenv").config();
     // await driver.sleep(2000);
     // await driver.get('https://control.akamai.com/apps/fast-purge/#/');
     // await driver.findElement(By.css(`span[class="${akam-radio__label-content[2]}"]`)).click();
+  } catch (e) {
+    console.log(e);
   } finally {
     await driver.quit();
   }
